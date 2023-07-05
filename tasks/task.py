@@ -3,8 +3,11 @@ import time
 import sys
 from datetime import datetime
 import requests
+
 from config.wsgi import *
 from mailings.models import Contact, Mailing, Message
+
+
 
 logging.basicConfig(
     format='%(asctime)s %(name)s %(levelname)s  %(message)s',
@@ -43,10 +46,7 @@ def send_api_message(message_id, contact, message):
             json=json
         )
         logger.info('Сообщение отправлено через венешний API')
-        if response.status_code == 200:
-            return True
-        else:
-            return False
+        return response.status_code == 200
     except Exception as error:
         logger.error(f'Сбой при отправке сообщения: {error}')
         return False
@@ -54,7 +54,7 @@ def send_api_message(message_id, contact, message):
 
 def start_mailings():
     """Основной код обработки рассылок."""
-    logger.debug('-----------------')
+    logger.info('-----------------')
     message_id = [1]
     finished_mailing_id = []
     if SENDING_API_TOKEN is None:
@@ -62,7 +62,7 @@ def start_mailings():
         raise MissingValueException('Отсутствуют переменные окружения!')
     while True:
         try:
-            logger.debug('Начало новой иттерации')
+            logger.info('Начало новой иттерации')
             mailings = Mailing.objects.all()
             for mailing in mailings:
                 current_datetime = datetime.now()
@@ -109,10 +109,10 @@ def start_mailings():
                             )
                         message_id[0] += 1
                     finished_mailing_id.append(mailing_id)
-            logger.debug('Конец иттерации')
-            logger.debug('-----------------')
+            logger.info('Конец иттерации')
+            logger.info('-----------------')
             time.sleep(RETRY_TIME)
         except Exception as error:
             logger.error(f'Сбой в работе программы: {error}')
-            logger.debug('-----------------')
+            logger.info('-----------------')
             time.sleep(RETRY_TIME)
