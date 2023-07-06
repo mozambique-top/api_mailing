@@ -40,14 +40,12 @@ git clone git@github.com:mozambique-top/api_mailing.git
 cd api_mailings
 ```
 
-
-
 2Установка и запуск приложения в контейнерах:
 ```bash 
 docker-compose up -d
 ```
 
-3Запуск миграций и сбор статики:
+3.Запуск миграций и сбор статики:
 ```bash 
 docker-compose exec web python manage.py migrate
 
