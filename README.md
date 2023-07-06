@@ -52,7 +52,6 @@ docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py collectstatic --no-input 
 ```
 
-<<<<<<< HEAD
+
 ```http://127.0.0.1/redoc/```
-=======
->>>>>>> 4a6c9851df3487e76d8d9477666486c989b34e79
+
